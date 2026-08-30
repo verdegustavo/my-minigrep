@@ -1,3 +1,4 @@
+use my_minigrep::search;
 use std::env;
 use std::error::Error;
 use std::fs;
@@ -39,7 +40,9 @@ fn run(configuration: &Config) -> Result<(), Box<dyn Error>> {
     println!("Searching for {}", configuration.file_path);
 
     let contents = fs::read_to_string(configuration.file_path)?;
-    println!("With text:\n{contents}");
+    for line in search(configuration.query, &contents) {
+        println!("{line}");
+    }
 
     Ok(())
 }
