@@ -36,8 +36,8 @@ impl Config<'_> {
 }
 
 fn run(configuration: &Config) -> Result<(), Box<dyn Error>> {
-    println!("Searching for {}", configuration.query);
-    println!("Searching for {}", configuration.file_path);
+    //println!("Searching for {}", configuration.query);
+    //println!("Searching for {}", configuration.file_path);
 
     let contents = fs::read_to_string(configuration.file_path)?;
     for line in search(configuration.query, &contents) {
