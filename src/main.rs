@@ -35,12 +35,12 @@ impl Config<'_> {
     }
 }
 
-fn run(configuration: &Config) -> Result<(), Box<dyn Error>> {
-    //println!("Searching for {}", configuration.query);
-    //println!("Searching for {}", configuration.file_path);
+fn run(parameters: &Config) -> Result<(), Box<dyn Error>> {
+    //println!("Searching for {}", parameters.query);
+    //println!("Searching for {}", parameters.file_path);
 
-    let contents = fs::read_to_string(configuration.file_path)?;
-    for line in search(configuration.query, &contents) {
+    let contents = fs::read_to_string(parameters.file_path)?;
+    for line in search(parameters.query, &contents) {
         println!("{line}");
     }
 
