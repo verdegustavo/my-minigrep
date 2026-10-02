@@ -1,4 +1,5 @@
 use my_minigrep::search;
+use my_minigrep::search_case_insensitive;
 use std::env;
 use std::error::Error;
 use std::fs;
@@ -21,6 +22,7 @@ fn main() {
 struct Config<'a> {
     query: &'a str,
     file_path: &'a str,
+    ignore_case: bool,
 }
 
 impl Config<'_> {
@@ -30,17 +32,29 @@ impl Config<'_> {
         }
         let query = &args[1];
         let file_path = &args[2];
+        let mut ignore_case = false;
+        if let Ok(env_value) = env::var("IGNORE_CASE") && env_value == "Yes"{
+                ignore_case = true
+        };
 
-        Ok(Config { query, file_path })
+        Ok(Config {
+            query,
+            file_path,
+            ignore_case,
+        })
     }
 }
 
 fn run(parameters: &Config) -> Result<(), Box<dyn Error>> {
-    //println!("Searching for {}", parameters.query);
-    //println!("Searching for {}", parameters.file_path);
-
     let contents = fs::read_to_string(parameters.file_path)?;
-    for line in search(parameters.query, &contents) {
+
+    let result = if parameters.ignore_case {
+        search_case_insensitive(parameters.query, &contents)
+    } else {
+        search(parameters.query, &contents)
+    };
+
+    for line in result {
         println!("{line}");
     }
 
