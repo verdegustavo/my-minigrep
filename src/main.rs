@@ -9,12 +9,12 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let config = Config::build(&args).unwrap_or_else(|err| {
-        println!("Problem parsing arguments: {err}");
+        eprintln!("Problem parsing arguments: {err}");
         process::exit(1)
     });
 
     if let Err(e) = run(&config) {
-        println!("Application error: {e}");
+        eprintln!("Application error: {e}");
         process::exit(1)
     }
 }
@@ -33,7 +33,7 @@ impl Config<'_> {
         let query = &args[1];
         let file_path = &args[2];
         let mut ignore_case = false;
-        if let Ok(env_value) = env::var("IGNORE_CASE") && env_value == "Yes"{
+        if let Ok(env_value) = env::var("IGNORE_CASE") && env_value == "Yes" {
                 ignore_case = true
         };
 
